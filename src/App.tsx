@@ -1,24 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
+import { SetStateAction, useCallback, useState } from 'react';
 import './App.css';
+import MissionContainer from './components/Missions/Index'
+import MissionInfo from './components/Missions Info/Index'
 
 function App() {
+
+  const [id, setId] = useState(25);
+  const handleIdChange = useCallback((newId: SetStateAction<number>) => {
+    setId(newId);
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App container-fluid">
+      <div className="row">
+        <div className="list col-3  overflow-scroll">
+          <MissionContainer handleIdChange={handleIdChange} />
+        </div>
+        <div className="list-info col-9 overflow-scroll">
+          <MissionInfo  id={id} />
+        </div>
+      </div>
     </div>
   );
 }

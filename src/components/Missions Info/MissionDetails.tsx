@@ -1,0 +1,53 @@
+import { LaunchInfoQuery } from './../../generated/graphql'
+import './index.css'
+
+interface Props {
+    data: LaunchInfoQuery
+}
+
+const className = 'LaunchProfile';
+
+
+const MissionsDetails: React.FC<Props> = ({ data }) => {
+    console.log(data)
+    if (!data.launch) {
+        return <div>No launch available</div>;
+    }
+    const { flight_number, launch_success, mission_name, rocket, launch_site, launch_year, details, links } = data.launch
+    return (
+        <div className={className}>
+        <div className={`${className}__status`}>
+          <span>Flight {data.launch.flight_number}: </span>
+          {data.launch.launch_success ? (
+            <span className={`${className}__success`}>Success</span>
+          ) : (
+            <span className={`${className}__failed`}>Failed</span>
+          )}
+        </div>
+        <h1 className={`${className}__title`}>
+          {data.launch.mission_name}
+          {data.launch.rocket &&
+            ` (${data.launch.rocket.rocket_name} | ${data.launch.rocket.rocket_type})`}
+        </h1>
+        <p className={`${className}__description`}>{data.launch.details}</p>
+        {!!data.launch.links && !!data.launch.links.flickr_images && (
+          <div className={`${className}__image-list`}>
+            {data.launch.links.flickr_images.map((image, i) =>
+              image ? (
+                <img
+                  src={image}
+                  className={`${className}__image`}
+                  key={image}
+                  alt={`${data.launch?.mission_name} ${i}`}
+                />
+              ) : null,
+            )}
+          </div>
+        )}
+      </div>
+    );
+  
+  
+}
+
+export default MissionsDetails
